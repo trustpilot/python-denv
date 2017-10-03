@@ -1,0 +1,52 @@
+sudo: required
+language: python
+addons:
+  apt_packages:
+  - pandoc
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+install:
+- pip install tox==2.3.1
+- pip install tox-travis==0.8
+- pip install pypandoc
+
+script:
+- tox
+branches:
+  only: master
+
+after_success:
+- git config --global user.email "travis@travis-ci.org"
+- git config --global user.name "Travis"
+- git tag -a v$(python setup.py --version) -m "Travis build $TRAVIS_BUILD_NUMBER pushed
+  a tag."
+- git push origin --tags
+- git fetch origin
+
+deploy:
+  - provider: pypi
+    skip_cleanup: true
+    distributions: sdist
+    user: "trustpilot"
+    password:
+      secure: oru3V/7Rw8PsLBBId2pj+iTNiQkxDAyUqa+zMUjD75G/uxHsrEGdaYo1Em/hb1z2ijhJqfQkD/ul4vQRW8/f+GVG57QVLiPpz4z8K/reWfeG+qnk2eYp0UIgf54ui8ZhgX6gGFOW4KqAKTBfjUIfDM/7Or5lPOJvh8dAOpLDLmPMtRcIWXVw2KzHlOjy5UfrkIpOw0gzUfsE6CWFZ6RwPGWkNfT2E5dO1zYUup6i107xc+SMGIFqz7oLNnctofARjU7RY3eOz8avlnErYYNHo5/4JhmqRqYFeG3UWaoheQIxTnwETDTcNTFwMmDrlQK/00weP9KMyT2/Fq5WMKginl0a0MWxOps9uzc9cQmSqlFdxQhM77nu539twxNHF96EUsS3FWbcVl7NNjxXnIjS1j24gDXDhy2KbvDu2Kbs0paQb7o5Oi04hMoE8y/BvRcP1l2RWFjbjTxqBOPCdfQur80sdPMj1SoDAbr0DW5tf6dAUd7ES/Iz95KsdYEQPPaLpRwWFQHiXHI1a5SFCOAuYkloThhJy+tKncBuzCxsyVpAcJ2mQRvTDCoro0yVswR67dQleT5N/Np13aFIIBby/fY2OLZwthUoOsAyrdIjoMg+zh1aJ6XVnhNv3SjYMsCDIukS4qOm34f2ssMg1M37Lftz9SnLc3mn6v54wvMzxww=
+    on:
+      tags: false
+      branch: master
+      repo: trustpilot/python-denv
+      condition: $TRAVIS_PYTHON_VERSION = "2.7"
+  - provider: releases
+    skip_cleanup: true
+    api-key:
+      secure: i5xFgFKV77gPs4txp/F6yd6u8KB1S8RlwBkznOBEt1Hp3C0UgEyxenOkqvjNaoqKlJBvU0X7K3ULHrI1XJF2gJpB2m2JoyKa4+aH/JfzRKmSJ8B7/WCU0GzNq2qTn7Qi929gdQd/80vZZnj8ItcF7tRimgzvdqf1Kz3pGtfoXDMDzS+tu+AM4kgKPWpcILjljOBCCMHwh0qsYN7FTNFP3FlociK0/uCIskzHOiYHf2Tb6mNji5SKDabhzPza2KSPVVaJkfOe+x/moTf16XHLxYRtsDrq7GWZepsTvAucCTDkAbTeLeA4VxAAOyKxbS1qFFUHQmE3HcRKQCZlvy9Aj1SE8Bu40j9ahtsrbclSfWHqtX/oAwG4aK6vrNCgGnCnUGc/jcrXYFNorbina5Sp4VCfi/VT3sC1e1Hccgj3ReXiObHpQd96oxjeerFoZYtMaQm3EwFMVPQwM2SzuzqHx2130BQ1Q8hMccDQMemIJlsGc8Pvlwx7isKDYzt4reDvnaCaaPZp1s7O7PbToKmtupeqVn++P/ARuKqqdJtg1AbwHOuNCD5XJEnP7H/bWdduChiy8r70Utd/hDQ3p7lwbdLI3Fb8y7E8BQYtPnt4NUPXA0S15KuXtBN2RS3dpCRA0caZfUIPY+L3B0XLwL6DO2+LrrkVnfsS9RA47eKikV4=
+    file_glob: true
+    file: dist/*
+    on:
+      tags: false
+      branch: master
+      repo: trustpilot/python-denv
+      condition: $TRAVIS_PYTHON_VERSION = "2.7"
+
