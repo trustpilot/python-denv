@@ -13,7 +13,7 @@ except ImportError:
 
 setup(
     name='denv',
-    version='1.1.3',
+    version='1.2.3',
     author='sloev',
     author_email='jgv@trustpilot.com',
     url='https://github.com/trustpilot/python-denv',
