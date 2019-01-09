@@ -13,7 +13,7 @@ except ImportError:
 
 setup(
     name='denv',
-    version='2.0.0',
+    version='2.0.1',
     author='sloev',
     author_email='jgv@trustpilot.com',
     url='https://github.com/trustpilot/python-denv',
@@ -22,7 +22,7 @@ setup(
     packages=['denv'],
     entry_points={
         'console_scripts': [
-            'denv=denv:main',
+            'denv=denv:cli',
         ],
     },
     license='MIT'
